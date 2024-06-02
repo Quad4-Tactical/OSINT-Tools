@@ -1,15 +1,20 @@
 import yt_dlp
+import os
 
-def download_video(video_url, output_dir="."):
-    """Download video from the given URL to the specified directory."""
-    
+def download_video(video_url, output_dir="videos"):
     ydl_opts = {
-        'paths': {'home': output_dir},
+        'outtmpl': os.path.join(output_dir, '%(title)s-%(id)s.%(ext)s'),
         'quiet': True,
     }
-    
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
-        ydl.download([video_url])
+        info_dict = ydl.extract_info(video_url, download=True)
+        video_title = info_dict.get('title')
+        video_id = info_dict.get('id')
+        video_ext = info_dict.get('ext')
+        video_filename = f"{video_title}-{video_id}.{video_ext}"
+        video_path = os.path.join(output_dir, video_filename)
+        
+    return os.path.abspath(video_path) 
 
 if __name__ == "__main__":
     import argparse
