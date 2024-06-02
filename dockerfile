@@ -1,11 +1,12 @@
-FROM archlinux:latest
+FROM python:3.12-slim
 
 WORKDIR /usr/src/app
 
-COPY setup.sh .
+RUN pip install --no-cache-dir poetry
+ENV POETRY_VIRTUALENVS_CREATE=false
 
-RUN pacman -Syu --noconfirm sudo && chmod +x setup.sh
+COPY pyproject.toml poetry.lock* /usr/src/app/
 
-ENTRYPOINT ["./setup.sh"]
+RUN poetry install --no-root --no-dev
 
-CMD ["bash"]
+COPY . /usr/src/app/
