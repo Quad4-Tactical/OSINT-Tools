@@ -53,11 +53,26 @@ function displayRSS(articles) {
     const list = document.createElement('ul');
     articles.forEach(article => {
         const item = document.createElement('li');
-        const link = document.createElement('a');
-        link.href = article.link;
-        link.textContent = article.title;
-        link.target = "_blank";
-        item.appendChild(link);
+
+        const title = document.createElement('div');
+        title.textContent = article.title;
+        item.appendChild(title);
+
+        const summary = document.createElement('p');
+        summary.innerHTML = article.summary;
+        item.appendChild(summary);
+
+        const pubDate = document.createElement('span');
+        pubDate.textContent = article.pubDate;
+        item.appendChild(pubDate);
+
+        if (article.link) {
+            const link = document.createElement('a');
+            link.setAttribute('href', article.link);
+            link.textContent = 'Link';
+            item.appendChild(link);
+        }
+
         list.appendChild(item);
     });
     container.appendChild(list);
@@ -87,3 +102,12 @@ function displayVideo(videoUrl) {
     videoPlayer.appendChild(source);
     document.getElementById('result-container').appendChild(videoPlayer);
 }
+
+document.getElementById('copy-result-btn').addEventListener('click', function() {
+    const textToCopy = document.getElementById('result-container').innerText;
+    navigator.clipboard.writeText(textToCopy).then(() => {
+        alert('Results copied to clipboard!');
+    }).catch(err => {
+        console.error('Error during copy: ', err);
+    });
+});

@@ -22,21 +22,34 @@ input:focus, button:focus {
     outline: none;
 }
 button {
-    background-color: #1E88E5;
+    background-color: #0011ff;
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s ease;
+    width: 250px;
 }
 button:hover {
-    background-color: #1565C0;
+    background-color: #00158f;
 }
 .container {
-    max-width: 700px;
-    margin: 40px auto;
+    max-width: 1200px;
+    width: 100%;
+    margin: auto;
     padding: 20px;
     background: #1C1C1C;
     border-radius: 12px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+}
+.split-view {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+.left-pane, .right-pane {
+    flex: 1;
+    padding: 20px;
 }
 h1, h2, h3, label {
     color: #ffffff;
@@ -46,10 +59,78 @@ form {
     border-bottom: 1px solid #555;
     padding-bottom: 20px;
 }
-#result-container {
+#result-container, #rss-result-container {
     margin-top: 20px;
     padding: 10px;
     background: #222;
     color: #ddd;
     border-radius: 8px;
+}
+textarea {
+    padding: 12px 20px;
+    margin: 10px 0;
+    border: 1px solid #555;
+    border-radius: 8px;
+    background: #222;
+    color: #DDD;
+    width: calc(100% - 48px);
+    box-sizing: border-box;
+    resize: vertical;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verbane;
+}
+
+#result-container ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+#result-container li {
+    margin-bottom: 20px;
+}
+
+#result-container div {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+#result-container p {
+    margin-bottom: 10px;
+}
+
+#result-container span {
+    color: #888;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+#result-container a {
+    color: #1E88E5;
+    text-decoration: none;
+    font-weight: bold;
+    margin-left: 10px;
+}
+.results-wrapper {
+    position: relative;
+    margin-top: 20px;
+    padding: 10px;
+    background: #222;
+    color: #ddd;
+    border-radius: 8px;
+}
+
+#copy-result-btn {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    padding: 5px 10px;
+    background-color: #0055cc;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#copy-result-btn:hover {
+    background-color: #003399;
 }
