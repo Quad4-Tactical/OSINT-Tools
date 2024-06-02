@@ -11,6 +11,15 @@ def translate_file(filename, from_lang, to_lang):
     new_filename = f"{filename.rsplit('.', 1)[0]}_translated.txt"
     with open(new_filename, 'w', encoding='utf-8') as f:
         f.write(translated_content)
+    print(f"File translated and saved as: {new_filename}")
+
+def export_articles(articles, filename, format, from_lang=None, to_lang=None):
+    if format == 'markdown':
+        export_to_markdown(articles, filename, from_lang, to_lang)
+    elif format == 'txt':
+        export_to_txt(articles, filename, from_lang, to_lang)
+    elif format == 'csv':
+        export_to_csv(articles, filename, from_lang, to_lang)
 
 def export_to_markdown(articles, filename, from_lang=None, to_lang=None):
     with open(filename, 'w', encoding='utf-8') as f:
@@ -52,30 +61,38 @@ def export_to_csv(articles, filename, from_lang=None, to_lang=None):
             writer.writerow([title, link, content])
 
 def main():
-    parser = argparse.ArgumentParser(description="Utility for translating text, files, and RSS feed articles.")
+    parser = argparse.ArgumentParser(description="Utility for translating text, files, and fetching RSS feed articles.")
     parser.add_argument("--translate", help="Text to translate directly.")
     parser.add_argument("--translate-file", help="Path to a file to translate.")
-    parser.add_argument("--feed-url", help="RSS feed URL to fetch and translate articles.")
-    parser.add_argument("--full", action="store_true", help="Fetch full text content for each article.")
-    parser.add_argument("--export", choices=['markdown', 'txt', 'csv'], help="Export format for translated RSS articles.")
-    parser.add_argument("--output", default="exported_articles", help="Output file name (without extension) for exported RSS articles.")
-    parser.add_argument("--from-lang", required=True, help="Source language code.")
-    parser.add_argument("--to-lang", required=True, help="Target language code.")
+    parser.add_argument("--feed-url", help="RSS feed URL to fetch articles.")
+    parser.add_argument("--full", action="store_true", help="Whether to fetch full text content for each article.")
+    parser.add_argument("--export", choices=['markdown', 'txt', 'csv'], help="Export format for RSS articles.")
+    parser.add_argument("--output", default="exported_articles", help="Output file name without extension for exported RSS articles.")
+    parser.add_argument("--from-lang", help="Source language code for translation.")
+    parser.add_argument("--to-lang", help="Target language code for translation.")
+
     args = parser.parse_args()
 
     if args.translate:
+        if not args.from_lang or not args.to_lang:
+            print("Translation requires both --from-lang and --to-lang parameters.")
+            return
         print(translate_text(args.translate, args.from_lang, args.to_lang))
-    elif args.file:
-        translate_file(args.file, args.from_lang, args.to_lang)
+
+    elif args.translate_file:
+        if not args.from_lang or not args.to_lang:
+            print("File translation requires both --from-lang and --to_lang parameters.")
+            return
+        translate_file(args.translate_file, args.from_lang, args.to_lang)
+
     elif args.feed_url:
         articles = fetch_rss_feed(args.feed_url)
-        if args.export and args.full:
-            export_func = export_to_markdown if args.export == "markdown" else export_to_txt if args.export == "txt" else export_to_csv
-            export_func(articles, f"{args.output}.{args.export}", args.from_lang, args.to_lang)
+        if args.export:
+            output_file = f"{args.output}.{args.export}"
+            export_articles(articles, output_file, args.export, args.from_lang if args.from_lang else None, args.to_lang if args.to_lang else None)
         else:
-            for article in articles:
-                title = translate_text(article['title'], args.from_lang, args.to_lang)
-                print(f"Title: {title}\nLink: {article['link']}\n---")
-        
+            # Assume a function to simply print or display articles
+            display_articles(articles)
+
 if __name__ == "__main__":
     main()
