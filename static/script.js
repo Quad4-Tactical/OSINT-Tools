@@ -37,7 +37,7 @@ async function handleAction(url, data) {
 function displayResult(data) {
     const container = document.getElementById('result-container');
     if (data.translated_text) {
-        container.textContent = data.translated_text;
+        container.innerHTML = data.translated_text.replace(/\n/g, '<br>');
     } else if (data.articles) {
         displayRSS(data.articles);
     } else if (data.video_url) {
