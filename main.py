@@ -11,6 +11,7 @@ import os
 import uuid
 
 app = FastAPI()
+favicon_path = 'favicon.ico'
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
 app.mount("/videos", StaticFiles(directory="videos"), name="videos")
@@ -37,6 +38,10 @@ async def download_video_task(download_id, url, video_dir="videos"):
 @app.get("/")
 async def read_root():
     return RedirectResponse(url='/static/index.html')
+
+@app.get('/favicon.ico', include_in_schema=False)
+async def favicon():
+    return FileResponse(favicon_path)
 
 @app.post("/translate/")
 def api_translate(request: TranslateRequest):
