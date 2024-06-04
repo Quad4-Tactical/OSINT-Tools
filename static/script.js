@@ -126,9 +126,19 @@ document.addEventListener('paste', async (event) => {
     }
 });
 
-async function submitOCRImage(file) {
+document.getElementById('ocr-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const fileInput = document.getElementById('image-file');
+
+    if (fileInput.files.length === 0) {
+        alert('Please select an image file.');
+        return;
+    }
+
+    document.getElementById('result-container').textContent = "Processing OCR...";
+
     const formData = new FormData();
-    formData.append('file', file);
+    formData.append('file', fileInput.files[0]);
 
     try {
         const response = await fetch('/ocr/', {
@@ -138,7 +148,7 @@ async function submitOCRImage(file) {
         const data = await response.json();
         document.getElementById('result-container').textContent = data.extracted_text;
     } catch (error) {
-        console.error('Error in OCR processing:', error);
+        console.error('Error:', error);
         document.getElementById('result-container').textContent = `OCR error: ${error.toString()}`;
     }
-}
+});
