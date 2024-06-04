@@ -102,7 +102,6 @@ function displayVideo(videoUrl) {
     videoPlayer.appendChild(source);
     document.getElementById('result-container').appendChild(videoPlayer);
 }
-
 document.getElementById('copy-result-btn').addEventListener('click', function() {
     const textToCopy = document.getElementById('result-container').innerText;
     navigator.clipboard.writeText(textToCopy).then(() => {
@@ -111,3 +110,22 @@ document.getElementById('copy-result-btn').addEventListener('click', function() 
         console.error('Error during copy: ', err);
     });
 });
+
+async function submitOCRForm(e) {
+    e.preventDefault();
+
+    const fileInput = document.getElementById('image-file');
+    const formData = new FormData();
+    formData.append('file', fileInput.files[0]);
+
+    try {
+        const response = await fetch('/ocr/', {
+            method: 'POST',
+            body: formData
+        });
+        const data = await response.json();
+        document.getElementById('result-container').textContent = data.extracted_text;
+    } catch (error) {
+        console.error('Error:', error);
+    }
+}

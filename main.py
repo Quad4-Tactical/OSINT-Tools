@@ -1,18 +1,51 @@
-from fastapi import FastAPI, BackgroundTasks, HTTPException
+from fastapi import FastAPI, BackgroundTasks, HTTPException, File, UploadFile
 from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse, HTMLResponse, RedirectResponse
+from fastapi.middleware.cors import CORSMiddleware
 from typing import Optional
 from rss.rss_fetcher import fetch_rss_feed
 from rss.fetch_fulltext import fetch_full_text
 from translate.argos import translate_text
-from ytdlp.download_video import download_video
+from ytdlp.download_video import download_video 
+from ocr.ocr import perform_ocr
 from pydantic import BaseModel
 import os
 import uuid
+import shutil
 
-app = FastAPI()
+tags_metadata = [
+    {
+        "name": "Translate",
+        "description": "Translation-related operations. Convert text between languages.",
+    },
+    {
+        "name": "RSS",
+        "description": "RSS feed fetching. Obtain and optionally fetch full article content.",
+    },
+    {
+        "name": "Video Download",
+        "description": "Video download operations. Download videos from various sources.",
+    },
+    {
+        "name": "OCR",
+        "description": "Optical Character Recognition. Extract text from images.",
+    },
+]
+
+app = FastAPI(
+    title="OSINT Tools",
+    openapi_tags=tags_metadata,
+)
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 favicon_path = 'favicon.ico'
-
 app.mount("/static", StaticFiles(directory="static"), name="static")
 app.mount("/videos", StaticFiles(directory="videos"), name="videos")
 
@@ -43,11 +76,19 @@ async def read_root():
 async def favicon():
     return FileResponse(favicon_path)
 
-@app.post("/translate/")
+@app.post("/translate/", tags=["Translate"])
 def api_translate(request: TranslateRequest):
     return {"translated_text": translate_text(request.text, request.from_lang, request.to_lang)}
 
-@app.post("/fetch-rss/")
+@app.post("/ocr/", tags=["OCR"])
+async def ocr_endpoint(file: UploadFile = File(...)):
+    temp_file_path = f"temp_{uuid.uuid4().hex}.jpg"
+    with open(temp_file_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+    extracted_text = perform_ocr(temp_file_path)
+    return {"extracted_text": extracted_text}
+
+@app.post("/fetch-rss/", tags=["RSS"])
 def api_fetch_rss(request: FetchRSSRequest):
     articles = fetch_rss_feed(request.feed_url)
     if request.full:
@@ -55,7 +96,7 @@ def api_fetch_rss(request: FetchRSSRequest):
             article['content'] = fetch_full_text(article['link'])
     return {"articles": articles}
 
-@app.post("/download-video/")
+@app.post("/download-video/", tags=["Video Download"])
 async def api_download_video(request: DownloadVideoRequest, background_tasks: BackgroundTasks):
     download_id = str(uuid.uuid4())
     background_tasks.add_task(download_video_task, download_id, request.url, request.video_dir)

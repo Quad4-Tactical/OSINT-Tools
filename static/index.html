@@ -7,16 +7,15 @@
 </head>
 <body>
     <div class="container">
-        <h1 style="align-self: flex-start;">OSINT Tools</h1>
+        <h1>OSINT Tools</h1>
         <div class="split-view">
             <div class="left-pane">
                 <form id="translate-form">
-                    <textarea id="translate-text" placeholder="Text to translate" rows="2"></textarea>
+                    <textarea id="translate-text" placeholder="Text to translate" rows="3"></textarea>
                     <input type="text" id="from-lang" placeholder="From language">
                     <input type="text" id="to-lang" placeholder="To language">
                     <button type="submit">Translate</button>
                 </form>
-                
                 <form id="download-video-form">
                     <input type="text" id="video-url" placeholder="Video URL">
                     <button type="submit">Download Video</button>
@@ -27,13 +26,14 @@
                     <input type="text" id="rss-url" placeholder="RSS feed URL">
                     <button type="submit">Fetch RSS</button>
                 </form>
+                <form id="ocr-form" enctype="multipart/form-data" onsubmit="submitOCRForm(event)">
+                    <input type="file" id="image-file" name="file" accept="image/*">
+                    <button type="submit">Perform OCR</button>
+                </form>
             </div>
         </div>
     </div>
-    <div class="results-wrapper">
-        <button id="copy-result-btn">Copy Results</button>
-        <div id="result-container"></div>
-    </div>
+    <div id="result-container"></div>
     <script src="/static/script.js"></script>
 </body>
 </html>

@@ -134,3 +134,11 @@ textarea {
 #copy-result-btn:hover {
     background-color: #003399;
 }
+
+#ocr-form {
+    margin-bottom: 20px;
+}
+
+#ocr-result {
+    margin-top: 20px;
+}

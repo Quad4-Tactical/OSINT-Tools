@@ -1,20 +1,22 @@
 import yt_dlp
 import os
+import secrets
 
 def download_video(video_url, output_dir="videos"):
+    random_filename = secrets.token_hex(4)
+    
     ydl_opts = {
-        'outtmpl': os.path.join(output_dir, '%(title)s-%(id)s.%(ext)s'),
+        'outtmpl': os.path.join(output_dir, f'{random_filename}.%(ext)s'),
         'quiet': True,
     }
+
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info_dict = ydl.extract_info(video_url, download=True)
-        video_title = info_dict.get('title')
-        video_id = info_dict.get('id')
         video_ext = info_dict.get('ext')
-        video_filename = f"{video_title}-{video_id}.{video_ext}"
+        video_filename = f"{random_filename}.{video_ext}"
         video_path = os.path.join(output_dir, video_filename)
         
-    return os.path.abspath(video_path) 
+    return os.path.abspath(video_path)
 
 if __name__ == "__main__":
     import argparse
