@@ -10,6 +10,9 @@ COPY pyproject.toml poetry.lock* /app/
 
 RUN poetry install --no-root --no-dev
 
+RUN mkdir /videos
+RUN mkdir /temp
+
 COPY . /app/
 
 EXPOSE 8000
