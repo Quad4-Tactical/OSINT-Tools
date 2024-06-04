@@ -10,6 +10,9 @@ on:
     - cron: '21 0 * * *'
   push:
     branches: [ "main" ]
+    paths-ignore:
+      - README.md
+      - .gitignore
     # Publish semver tags as releases.
     tags: [ 'v*.*.*' ]
   pull_request:
