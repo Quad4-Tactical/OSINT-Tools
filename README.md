@@ -15,7 +15,15 @@ docker run -d --name osint-tools \
   ghcr.io/quad4-tactical/osint-tools:latest
 ```
 
-#### Building Manually
+### Podman
+
+```bash
+podman run -p 8000:8000 -v /videos:/videos ghcr.io/quad4-tactical/osint-tools:latest
+```
+
+## Building Manually
+
+### Docker
 
 ```bash
 git clone https://github.com/Quad4-Tactical/OSINT-Tools.git && cd OSINT-Tools
@@ -24,4 +32,12 @@ docker run -d --name osint-tools \
   -p 8000:8000 \
   -v /videos:/videos \
   osint-tools
+```
+
+### Podman
+
+```bash
+git clone https://github.com/Quad4-Tactical/OSINT-Tools.git && cd OSINT-Tools
+podman build -t osint-tools .
+podman run -p 8000:8000 -v /videos:/videos osint-tools
 ```
