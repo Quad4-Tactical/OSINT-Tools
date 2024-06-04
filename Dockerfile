@@ -8,7 +8,7 @@ ENV POETRY_VIRTUALENVS_CREATE=false
 
 COPY pyproject.toml poetry.lock* /app/
 
-RUN poetry install --no-root --no-dev
+RUN poetry install --no-root
 
 RUN mkdir /videos
 RUN mkdir /temp
