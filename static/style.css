@@ -1,144 +1,192 @@
-body {
+/* Global styles */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+  
+  body {
     background-color: #121212;
     color: #E0E0E0;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    padding: 40px;
-    margin: 0;
     font-size: 16px;
-}
-input, button {
+    line-height: 1.5;
+  }
+  
+  /* Desktop and tablet */
+  @media (min-width: 768px) {
+    .container {
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .split-view {
+      flex-direction: row;
+      justify-content: space-between;
+    }
+    .left-pane, .right-pane {
+      flex-basis: 50%;
+      padding: 20px;
+    }
+    #translate-text {
+      width: 900px;
+      height: 300px;
+    }
+  }
+  
+  /* Mobile */
+  @media (max-width: 767px) {
+    .container {
+      padding: 20px;
+      margin: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .split-view {
+      flex-direction: column;
+    }
+    .left-pane, .right-pane {
+      flex-basis: 100%;
+      padding: 20px;
+    }
+    input, button, textarea {
+      width: 100%;
+      font-size: 18px;
+    }
+    #copy-result-btn {
+      width: 100%;
+      position: relative;
+      top: 0;
+      right: 0;
+    }
+
+    @viewport {
+      width: device-width;
+      zoom: 1.0;
+      user-scalable: no;
+    }
+  }
+  
+  /* Form elements */
+  
+  input, button, textarea {
     padding: 12px 20px;
     margin: 10px 0;
     border: 1px solid #555;
-    border-radius: 8px;
+    border-radius: 12px;
     background: #222;
     color: #DDD;
-    width: calc(100% - 48px);
     box-sizing: border-box;
     transition: all 0.2s ease-in-out;
-}
-input:focus, button:focus {
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    appearance: none;
+  }
+  
+  input:focus, button:focus {
     border-color: #1E88E5;
     outline: none;
-}
-button {
+    box-shadow: 0 0 0 2px #1E88E5;
+  }
+  
+  button {
     background-color: #0011ff;
     font-weight: bold;
     cursor: pointer;
     transition: background-color 0.3s ease;
-    width: 250px;
-}
-button:hover {
+    flex-grow: 1;
+    margin: 10px;
+  }
+  
+  button:hover {
     background-color: #00158f;
-}
-.container {
-    max-width: 1200px;
-    width: 100%;
-    margin: auto;
-    padding: 20px;
-    background: #1C1C1C;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    display: flex;
-    flex-direction: column;
-}
-.split-view {
-    display: flex;
-    flex-direction: row;
-    width: 100%;
-}
-.left-pane, .right-pane {
-    flex: 1;
-    padding: 20px;
-}
-h1, h2, h3, label {
+  }
+  
+  /* Other elements */
+  
+  h1, h2, h3, label {
     color: #ffffff;
-}
-form {
-    margin-bottom: 30px;
+    font-weight: bold;
+  }
+  
+  form {
+    margin-bottom: 40px;
+    padding: 30px;
     border-bottom: 1px solid #555;
-    padding-bottom: 20px;
-}
-#result-container, #rss-result-container {
+  }
+  
+  #result-container, #rss-result-container {
     margin-top: 20px;
-    padding: 10px;
+    padding: 20px;
     background: #222;
     color: #ddd;
     border-radius: 8px;
-}
-textarea {
-    padding: 12px 20px;
-    margin: 10px 0;
-    border: 1px solid #555;
-    border-radius: 8px;
-    background: #222;
-    color: #DDD;
-    width: calc(100% - 48px);
-    box-sizing: border-box;
-    resize: vertical;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verbane;
-}
-
-#result-container ul {
-    list-style-type: none;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  
+  #result-container ul {
+    list-style: none;
     padding: 0;
-}
-
-#result-container li {
-    margin-bottom: 20px;
-}
-
-#result-container div {
+  }
+  
+  #result-container li {
+    margin-bottom: 30px;
+  }
+  
+  #result-container div {
     font-weight: bold;
-    font-size: 18px;
+    font-size: 20px;
     margin-bottom: 10px;
-}
-
-#result-container p {
-    margin-bottom: 10px;
-}
-
-#result-container span {
+  }
+  
+  #result-container p {
+    margin-bottom: 20px;
+  }
+  
+  #result-container span {
     color: #888;
-    font-size: 14px;
+    font-size: 16px;
     margin-bottom: 10px;
-}
-
-#result-container a {
+  }
+  
+  #result-container a {
     color: #1E88E5;
-    text-decoration: none;
+    text-decoration: underline;
     font-weight: bold;
     margin-left: 10px;
-}
-.results-wrapper {
+  }
+  
+  .results-wrapper {
     position: relative;
     margin-top: 20px;
-    padding: 10px;
+    padding: 20px;
     background: #222;
     color: #ddd;
     border-radius: 8px;
-}
-
-#copy-result-btn {
-    position: absolute;
-    right: 10px;
-    top: 10px;
+  }
+  
+  #copy-result-btn {
     padding: 5px 10px;
     background-color: #0055cc;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-}
-
-#copy-result-btn:hover {
+  }
+  
+  #copy-result-btn:hover {
     background-color: #003399;
-}
-
-#ocr-form {
-    margin-bottom: 20px;
-}
-
-#ocr-result {
+  }
+  
+  #ocr-form {
+    margin-bottom: 40px;
+  }
+  
+  #ocr-result {
     margin-top: 20px;
-}
+  }
+
