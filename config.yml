@@ -1,0 +1,15 @@
+cors_config:
+  allow_origins: ["*"]
+  allow_credentials: true
+  allow_methods: ["*"]
+  allow_headers: ["*"]
+
+ytdlp_config:
+  yt_dl_opts:
+    quiet: True
+    embed-thumbnail: True
+    embed-metadata: True
+
+argos_config:
+  device_type: auto
+  argos_args: []

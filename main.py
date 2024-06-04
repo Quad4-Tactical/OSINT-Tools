@@ -12,6 +12,7 @@ from pydantic import BaseModel
 import os
 import uuid
 import shutil
+import yaml
 
 tags_metadata = [
     {
@@ -37,12 +38,12 @@ app = FastAPI(
     openapi_tags=tags_metadata,
 )
 
+with open('config.yml', 'r') as f:
+    config = yaml.safe_load(f)
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    **config['cors_config']
 )
 
 favicon_path = 'favicon.ico'
@@ -64,8 +65,8 @@ class FetchRSSRequest(BaseModel):
 
 downloads = {}
 
-async def download_video_task(download_id, url, video_dir="videos"):
-    video_info = download_video(url, video_dir)
+async def download_video_task(download_id, url, config, video_dir="videos"):
+    video_info = download_video(url, config, video_dir)
     downloads[download_id] = os.path.basename(video_info)
 
 @app.get("/")
@@ -78,7 +79,7 @@ async def favicon():
 
 @app.post("/translate/", tags=["Translate"])
 def api_translate(request: TranslateRequest):
-    return {"translated_text": translate_text(request.text, request.from_lang, request.to_lang)}
+    return {"translated_text": translate_text(request.text, request.from_lang, request.to_lang, config)}
 
 @app.post("/ocr/", tags=["OCR"])
 async def ocr_endpoint(file: UploadFile = File(...)):
@@ -99,7 +100,7 @@ def api_fetch_rss(request: FetchRSSRequest):
 @app.post("/download-video/", tags=["Video Download"])
 async def api_download_video(request: DownloadVideoRequest, background_tasks: BackgroundTasks):
     download_id = str(uuid.uuid4())
-    background_tasks.add_task(download_video_task, download_id, request.url, request.video_dir)
+    background_tasks.add_task(download_video_task, download_id, request.url, config, request.video_dir)
     return {"message": "Video download started.", "download_id": download_id}
 
 @app.get("/check-download/{download_id}")

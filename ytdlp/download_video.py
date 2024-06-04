@@ -2,16 +2,12 @@ import yt_dlp
 import os
 import secrets
 
-def download_video(video_url, output_dir="videos"):
+def download_video(video_url, config, output_dir="videos"):
     random_filename = secrets.token_hex(4)
     
-    ydl_opts = {
-        'outtmpl': os.path.join(output_dir, f'{random_filename}.%(ext)s'),
-        'quiet': True,
-        'embed-thumbnail': True,
-        'embed-metadata': True,
-    }
-
+    ydl_opts = config.get('ytdlp_config', {}).get('yt_dl_opts', {})
+    ydl_opts['outtmpl'] = os.path.join(output_dir, f'{random_filename}.%(ext)s')
+    
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
         info_dict = ydl.extract_info(video_url, download=True)
         video_ext = info_dict.get('ext')

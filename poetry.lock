@@ -1209,6 +1209,7 @@ optional = false
 python-versions = ">=3.6"
 files = [
     {file = "opencv-python-headless-4.10.0.82.tar.gz", hash = "sha256:de9e742c1b9540816fbd115b0b03841d41ed0c65566b0d7a5371f98b131b7e6d"},
+    {file = "opencv_python_headless-4.10.0.82-cp37-abi3-macosx_11_0_arm64.whl", hash = "sha256:a09ed50ba21cc5bf5d436cb0e784ad09c692d6b1d1454252772f6c8f2c7b4088"},
     {file = "opencv_python_headless-4.10.0.82-cp37-abi3-macosx_12_0_x86_64.whl", hash = "sha256:977a5fd21e1fe0d3d2134887db4441f8725abeae95150126302f31fcd9f548fa"},
     {file = "opencv_python_headless-4.10.0.82-cp37-abi3-manylinux_2_17_aarch64.manylinux2014_aarch64.whl", hash = "sha256:db4ec6755838b0be12510bfc9ffb014779c612418f11f4f7e6f505c36124a3aa"},
     {file = "opencv_python_headless-4.10.0.82-cp37-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:10a37fa5276967ecf6eb297295b16b28b7a2eb3b568ca0ee469fb1a5954de298"},
