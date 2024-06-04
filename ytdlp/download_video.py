@@ -8,6 +8,8 @@ def download_video(video_url, output_dir="videos"):
     ydl_opts = {
         'outtmpl': os.path.join(output_dir, f'{random_filename}.%(ext)s'),
         'quiet': True,
+        'embed-thumbnail': True,
+        'embed-metadata': True,
     }
 
     with yt_dlp.YoutubeDL(ydl_opts) as ydl:
@@ -17,13 +19,3 @@ def download_video(video_url, output_dir="videos"):
         video_path = os.path.join(output_dir, video_filename)
         
     return os.path.abspath(video_path)
-
-if __name__ == "__main__":
-    import argparse
-    
-    parser = argparse.ArgumentParser(description='Download video from URL using yt-dlp.')
-    parser.add_argument('--url', help='Video URL to download', required=True)
-    parser.add_argument('--dir', help='Directory to save the video', default='.')
-    
-    args = parser.parse_args()
-    download_video(args.url, args.dir)
