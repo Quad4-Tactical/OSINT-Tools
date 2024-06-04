@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "osint-tools"
-version = "0.1.1"
+version = "0.1.2"
 description = "A collection of useful tools that can be used with the built-in frontend or using just the API."
 authors = ["Ivan Ryan <ivan@ivanryan.dev>"]
 readme = "README.md"
