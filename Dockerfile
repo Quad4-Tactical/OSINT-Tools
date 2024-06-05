@@ -10,8 +10,7 @@ COPY pyproject.toml poetry.lock* /app/
 
 RUN poetry install --no-root
 
-RUN mkdir /videos
-RUN mkdir /temp
+RUN mkdir /app/videos /app/temp
 
 COPY . /app/
 
